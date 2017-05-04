@@ -6,6 +6,7 @@ Created on Tue May 02 21:27:26 2017
 03-May-2017
 Example from this code: www.youtube.com/watch?v=h1dlnW1lmgc
 Inspiration: NASA Perpetual Ocean, www.youtube.com/watch?v=CCmTY0PKGDs
+Tested on VisIT 2.10
 
 Script to create moving streamlines in VisIT.
  - Randomly seed a box (dimensions specified inside set_stream_length) with short streamlines
@@ -179,7 +180,7 @@ def main():
 	colorTable = "windagain" # String specifying name of color table. Movement of streamlines best implied by a color table that fades from neutral to bright.
 	nFrames = 200 # number of frames to be generated
 	steplength = 0.05 # increase in streamline integration time between frames
-	streamlengths = [0,  0.283, 0.567, 0.85, 1.133, 1.41666] # Initial lengths of streamlines. Require 1 entry per streamline plot. Recommend: output of numpy.linspace(0, max_streamtime, number of plots)
+	streamlengths = [0,  0.283, 0.567, 0.85] # Initial lengths of streamlines. Require 1 entry per streamline plot. Recommend: output of numpy.linspace(0, max_streamtime, number of plots)
 	nStreamlines = 650 # number of streamlines generated in each streamline plot
 
 	# User must add the desired number of streamline plots
@@ -196,6 +197,12 @@ def main():
 	for n in range(nFrames):
 		streamlengths = [length + steplength for length in streamlengths]
 		streamlengths = [length % max_streamtime for length in streamlengths]
+		
+		# VisIT numbers plots sequentially from 0
+		# Example: if you have five background plots, and want four sets of streamlines,
+		#  the streamline plots will be labelled 5 through 8.
+		# Each plot has a unique random seed (numbers 11-14 in this example)
+		#  and a unique index in the streamlengths vector (0 onwards).
 		SetActivePlots((8, 5))
 		SetActivePlots(5)
 		set_stream_length(streamlengths[0], 11, streamline_options)
@@ -208,6 +215,7 @@ def main():
 		SetActivePlots((7,8))
 		SetActivePlots(8)
 		set_stream_length(streamlengths[3], 14, streamline_options)
+		
 		DrawPlots()
 		savePNG()
 
