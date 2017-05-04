@@ -17,15 +17,6 @@ Create or modify the function savePNG() with correct output directories, file fo
 """
 
 
-def add_new(plots, streamtimes):
-	number = 9 + len(plots)
-	AddPlot("Streamline", "wind", 1, 0)
-	set_stream_length(0.1, number)
-	DrawPlots()
-	plots.append(number)
-	streamtimes.append(0.1)
-	return(plots, streamtimes)
-
 def set_stream_length(streamtime, seed, options):
 	(max_streamtime, boxExtents, colorTable, nStreamlines) = options
 	print 'setting stream length'
@@ -180,19 +171,6 @@ def savePNG():
 	SaveWindowAtts.advancedMultiWindowSave = 0
 	SetSaveWindowAttributes(SaveWindowAtts)
 	SaveWindow()
-
-def grow_all(plots, streamtimes):
-	for i in range(len(plots)):
-		number = plots[i]
-		s = streamtimes[i]
-		SetActivePlots((number-1, number))
-		SetActivePlots(number)
-		if s == 1.0:
-			set_stream_lengths(0, number)
-		else:
-			set_stream_length(s + 0.1, number)
-			streamtimes[i] += 0.1
-	return(plots, streamtimes)
 
 def main():
 	# User-set parameters
