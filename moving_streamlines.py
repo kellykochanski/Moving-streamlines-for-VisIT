@@ -191,8 +191,8 @@ def main():
 	#Aesthetic parameters
 	start_transparency = max_streamtime*3/5 # streamlines fade to transparent once they get longer than this. 0 < start_transparency < max_streamtime
 	colorTable = "Greys" # String specifying name of color table.
-	nFrames = 200 # number of frames to be generated
 	steplength = 0.05 # increase in streamline integration time between frames. Decrease this to improve resolution.
+	nFrames = int(max_streamtime/steplength) # number of frames to be generated
 	nStreamlines = 650 # number of streamlines generated in each streamline plot
 
 	# User must add the desired number of streamline plots
