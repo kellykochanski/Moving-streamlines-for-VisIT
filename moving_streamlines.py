@@ -18,13 +18,19 @@ Create or modify the function savePNG() with correct output directories, file fo
 
 Color table : recommend fade from neutral to bright to and optionally back to neutral color
 Example uses lilac [136 136 178] to off-white [253 248 255] to grey [82 82 82]
+
+Not working?
+ - Does every streamline plot in main() have its own plot number?
+ - Do those plot numbers start at (number of background plots) - 1 ? 
+ - Is the vector data file the active source?
+ - Does each streamline plot have a unique random seed?
 """
 
 
 def set_stream_length(streamtime, seed, options):
-	(max_streamtime, boxExtents, colorTable, nStreamlines) = options
+	(max_streamtime, start_transparency, boxExtents, colorTable, nStreamlines) = options
 	print 'setting stream length'
-	opacity = max( min(max_streamtime - max_streamtime/2, 1), 0)
+	opacity = max( min( (max_streamtime - streamtime)/(max_streamtime - start_transparency), 1), 0)
 	StreamlineAtts = StreamlineAttributes()
 	StreamlineAtts.sourceType = StreamlineAtts.SpecifiedBox  # SpecifiedPoint, 	SpecifiedPointList, SpecifiedLine, SpecifiedCircle, SpecifiedPlane, SpecifiedSphere, SpecifiedBox, Selection
 	StreamlineAtts.pointSource = (0, 0, 0)
@@ -177,13 +183,16 @@ def savePNG():
 	SaveWindow()
 
 def main():
-	# User-set parameters
-	max_streamtime = 1.7 # maximum length in time of any streamline
+	#Required parameters
 	box_extents = (0, 360, -90, -40, 28, 29) # Streamlines are only generated in this region. Format: (minx, maxx, miny, maxy, minz, maxz)
-	colorTable = "windagain" # String specifying name of color table.
-	nFrames = 200 # number of frames to be generated
-	steplength = 0.05 # increase in streamline integration time between frames
+	max_streamtime = 1.7 # maximum length in time of any streamline
 	streamlengths = [0,  0.283, 0.567, 0.85] # Initial lengths of streamlines. Require 1 entry per streamline plot. Recommend: output of numpy.linspace(0, max_streamtime, number of plots)
+	
+	#Aesthetic parameters
+	start_transparency = max_streamtime*3/5 # streamlines fade to transparent once they get longer than this. 0 < start_transparency < max_streamtime
+	colorTable = "Greys" # String specifying name of color table.
+	nFrames = 200 # number of frames to be generated
+	steplength = 0.05 # increase in streamline integration time between frames. Decrease this to improve resolution.
 	nStreamlines = 650 # number of streamlines generated in each streamline plot
 
 	# User must add the desired number of streamline plots
@@ -195,7 +204,7 @@ def main():
 	AddPlot("Streamline", "wind", 1, 0)
 	AddPlot("Streamline", "wind", 1, 0)
 
-	streamline_options = (max_streamtime, box_extents, colorTable, nStreamlines)
+	streamline_options = (max_streamtime, start_transparency box_extents, colorTable, nStreamlines)
 
 	for n in range(nFrames):
 		streamlengths = [length + steplength for length in streamlengths]
