@@ -15,6 +15,9 @@ Script to create moving streamlines in VisIT.
 
 Set user parameters and number of streamlines in main()
 Create or modify the function savePNG() with correct output directories, file format, etc
+
+Color table : recommend fade from neutral to bright to and optionally back to neutral color
+Example uses lilac [136 136 178] to off-white [253 248 255] to grey [82 82 82]
 """
 
 
@@ -177,7 +180,7 @@ def main():
 	# User-set parameters
 	max_streamtime = 1.7 # maximum length in time of any streamline
 	box_extents = (0, 360, -90, -40, 28, 29) # Streamlines are only generated in this region. Format: (minx, maxx, miny, maxy, minz, maxz)
-	colorTable = "windagain" # String specifying name of color table. Movement of streamlines best implied by a color table that fades from neutral to bright.
+	colorTable = "windagain" # String specifying name of color table.
 	nFrames = 200 # number of frames to be generated
 	steplength = 0.05 # increase in streamline integration time between frames
 	streamlengths = [0,  0.283, 0.567, 0.85] # Initial lengths of streamlines. Require 1 entry per streamline plot. Recommend: output of numpy.linspace(0, max_streamtime, number of plots)
